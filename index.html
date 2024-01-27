@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+    <title>Student Grades</title>
+  
+</head>
+<body>
+
+  <div id="output"></div>
+
+
+<script>
+   
+    let grades = "jim|25, sue|32, mary|34, ann|22, ted|28, frank|15, lisa|19, mike|30, ahn|26, vishaya|27";
+
+
+    let gradeArray = grades.split(', ');
+
+   
+    let lowestScore = Infinity;
+    let highestScore = -Infinity;
+    let sumScores = 0;
+
+    
+    for (let i = 0; i < gradeArray.length; i++) {
+        let [name, score] = gradeArray[i].split('|');
+        
+        let capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
+
+      
+        document.getElementById('output').innerHTML += '<strong>' + capitalizedName + '</strong> - ' + score + '<br>';
+
+     
+        let numericScore = parseInt(score);
+        if (numericScore < lowestScore) {
+            lowestScore = numericScore;
+        }
+        if (numericScore > highestScore) {
+            highestScore = numericScore;
+        }
+        sumScores += numericScore;
+    }
+
+    let averageScore = sumScores / gradeArray.length;
+
+   
+    document.getElementById('output').innerHTML += '<br>';
+    
+    document.getElementById('output').innerHTML += 'Lowest Score: ' + lowestScore + '<br>';
+    document.getElementById('output').innerHTML += 'Highest Score: ' + highestScore + '<br>';
+    document.getElementById('output').innerHTML += 'Average Score: ' + averageScore.toFixed(2) + '<br>';
+</script>
+
+</body>
+</html>
