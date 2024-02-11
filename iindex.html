@@ -1,41 +1,44 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
 </head>
+
 <body>
 
-<h1>Robo Dealer</h1>
+  <h1>Robo Dealer</h1>
 
   <button onclick="dealHand();">Deal Hand</button>
 
-<hr><div id="card_hand"></div>
+  <hr>
+  <div id="card_hand"></div>
 
-<script>
+  <script>
 
-  /* define Card object and deck of cards here */
-  function Card(value, suit){
-    this.value = value;
-    this.suit = suit;
-  }
-
-
-  const dealHand = () => {
-
-    /* code to deal a card hand goes here */
-
-    let deck = creatDeck();
-    let hand = [];
-    for(let i = 0; i < 5; i++) {
-      let randomIndex = Math.floor(Math.random() * deck.length);
-      hand.push(deck[randomIndex]);
-      deck.splice(randomIndex, 1);
+    /* define Card object and deck of cards here */
+    function Card(value, suit) {
+      this.value = value;
+      this.suit = suit;
     }
 
-    displalyHand(hand);
 
-  };
-    
+    const dealHand = () => {
+
+      /* code to deal a card hand goes here */
+
+      let deck = creatDeck();
+      let hand = [];
+      for (let i = 0; i < 5; i++) {
+        let randomIndex = Math.floor(Math.random() * deck.length);
+        hand.push(deck[randomIndex]);
+        deck.splice(randomIndex, 1);
+      }
+
+      displalyHand(hand);
+
+    };
+
 
     // update 'card_hand' DIV with appropriate information
     $("#card_hand").html("Button clicked");
@@ -43,8 +46,8 @@
     return false; // prevent page reload
   }
 
-</script>
+  </script>
 
 </body>
-</html>
 
+</html>
