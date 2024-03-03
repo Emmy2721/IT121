@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>Weather Forecast</title>
+
+</head>
+<body>
+    <h1>Weather Forecast</h1>
+    <form id="weatherForm">
+        <label for="city">Enter a city name:</label>
+        <input type="text" id="city" name="city" required>
+        <button type="submit">Get Forecast</button>
+    </form>
+    <div id="forecast"></div>
+
+    <script>
+        const form = document.getElementById('weatherForm');
+        const forecastDiv = document.getElementById('forecast');
+
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+ const city = form.elements.city.value;
+ const apiKey = '475ff82439afe058cdbee1ab3bac72df'; 
+
+            if (!city || !isNaN(city)) {
+                alert('Please enter a valid city name.');
+                return;
+            }
+
+            try {
+                const response = await axios.get(apiUrl);
+                const forecastData = response.data.list;
+
+                forecastDiv.innerHTML = '';
+
+                if (forecastData.length === 0) {
+                    forecastDiv.innerHTML = '<p>No forecast data available.</p>';
+                    return;
+                }
+
+                forecastData.forEach((item, index) => {
+                    if (index % 8 === 0) {
+                        const date = new Date(item.dt * 1000);
+                        const dateString = date.toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric'
+                        });
+
+                        const minTemp = item.main.temp_min;
+                        const maxTemp = item.main.temp_max;
+                        const humidity = item.main.humidity;
+                        const description = item.weather[0].description;
+
+
+                        const forecastItem = document.createElement('div');
+                        forecastItem.innerHTML = `
+                            <p>Date: ${dateString}</p>
+                            <p>Min Temperature: ${minTemp}°F</p>
+                            <p>Max Temperature: ${maxTemp}°F</p>
+                            <p>Humidity: ${humidity}%</p>
+                            <p>Description: ${description}</p>
+                            <img src="${iconUrl}" alt="${description}">
+                            <hr>
+                        `;
+                        forecastDiv.appendChild(forecastItem);
+                    }
+                });
+            } catch (error) {
+                console.error('Error weather data:', error);
+                forecastDiv.innerHTML = '<p>Failed forecast data.</p>';
+            }
+        });
+    </script>
+</body>
+</html>
