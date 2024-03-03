@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+    
     <title>Harry Potter </title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <style>
@@ -67,12 +67,20 @@
             row.append(`<td>${character.gender}</td>`);
             row.append(`<td>${character.alignment}</td>`);
             $('#characters tbody').append(row);
+
+           
+            if (character.name === "Albus Dumbledore" || character.name === "Ron Weasley" || 
+            character.name === "Ginny Weasley" || character.name === "Hermione Granger" 
+            || character.name === "Prof McGonagall" ||
+             character.name === "Harry Potter" || character.name === "Hagrid") {
+                row.addClass('important-character');
+            }
         });
 
         // Set visible rows to alternating background color
         $('#characters tbody tr:nth-child(even)').addClass('over');
 
-        // Add click handler to show only rows matching selected 'house'
+        //  add click handler to show only rows matching selected 'house'. Enable buttons to call this handler.
         $('.house-button').click(function(){
             let house = $(this).data('house');
             $('#characters tbody tr').hide();
@@ -81,7 +89,9 @@
 
         // Add click handler to reset table
         $('.reset-button').click(function(){
-            $('#characters tbody tr').show();
+            $('#characters tbody tr').hide();
+            $('#characters tbody tr:nth-child(even)').show(); 
+            $('.important-character').show();
         });
 
         });
