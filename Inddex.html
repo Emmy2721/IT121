@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Canvas Animation</title>
+    <title>Draw a picture</title>
     <style>
         canvas {
             border: 1px solid grey;
@@ -12,16 +12,15 @@
     <canvas id="myCanvas" width="300" height="150"></canvas>
 
     <script>
-        // Create a canvas and get its 2D rendering context
-        const myCanvas = document.createElement("canvas");
-        document.body.appendChild(myCanvas);
+       
+        const myCanvas = document.getElementById("myCanvas");
         const ctx = myCanvas.getContext("2d");
 
-        // Set the fill style to red and draw a rectangle
+ 
         ctx.fillStyle = "red";
         ctx.fillRect(20, 20, 150, 100);
 
-        // Set the stroke style to blue and draw a line
+
         ctx.strokeStyle = "blue";
         ctx.beginPath();
         ctx.moveTo(20, 20);
@@ -29,35 +28,34 @@
         ctx.lineTo(70, 100);
         ctx.stroke();
 
-        // Animation
-        let ballX = myCanvas.width / 2;
-        let ballY = myCanvas.height / 2;
-        let ballRadius = 20;
+    
+        let squareX = 20;
+        let squareY = 20;
         let dx = 2;
-        let dy = -2;
+        let dy = 2;
 
-        function drawBall() {
+        function drawSquare() {
             ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
             ctx.beginPath();
-            ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
+            ctx.rect(squareX, squareY, 50, 50);
+            ctx.closePath();
             ctx.fillStyle = 'green';
             ctx.fill();
             ctx.strokeStyle = 'black';
             ctx.stroke();
-            ctx.closePath();
         }
 
         function animate() {
-            drawBall();
+            drawSquare();
 
-            ballX += dx;
-            ballY += dy;
+            squareX += dx;
+            squareY += dy;
 
-            if (ballX + dx > myCanvas.width - ballRadius || ballX + dx < ballRadius) {
+            if (squareX + dx > myCanvas.width - 50 || squareX + dx < 0) {
                 dx = -dx;
             }
 
-            if (ballY + dy > myCanvas.height - ballRadius || ballY + dy < ballRadius) {
+            if (squareY + dy > myCanvas.height - 50 || squareY + dy < 0) {
                 dy = -dy;
             }
 
