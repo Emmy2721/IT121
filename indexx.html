@@ -1,100 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-    
-    <title>Harry Potter </title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <style>
-        .over {
-            background-color: orange;
-        }
-        .selected {
-            background-color: green;
-        }
-    </style>
 </head>
+<style>
+    .over {
+        background-color: yellow;
+    }
+    .selected {
+        background-color: green;
+    }
+</style>
+
 <body>
     <div id="buttons"></div>
-    <table id="characters" border='1'>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Role</th>
-                <th>House</th>
-                <th>Gender</th>
-                <th>Alignment</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Table rows will be generated programmatically -->
-        </tbody>
+    <table border='1' id="characterTable">
+        <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>House</th>
+            <th>Gender</th>
+            <th>Alignment</th>
+        </tr>
     </table>
-    <button class="reset-button">Reset</button>
-
-    <script>
-        // list of characters
-        let characters = [
-        {name:"Albus Dumbledore", role:"staff", house:"Gryffindor",gender:"m",alignment:"good"},    
-        {name:"Nymphadora Tonks", role:"", house:"Hufflepuff",gender:"f",alignment:"good"},    
-        {name:"Ron Weasley", role:"student", house:"Gryffindor",gender:"m",alignment:"good"},    
-        {name:"Ginny Weasley", role:"student", house:"Gryffindor",gender:"f",alignment:"good"},    
-        {name:"Hermione Granger", role:"student", house:"Gryffindor",gender:"f",alignment:"good"},    
-        {name:"Mad-eye Moody", role:"staff", house:"",gender:"m",alignment:"good"},    
-        {name:"Prof McGonagall", role:"staff", house:"Gryffindor",gender:"f",alignment:"good"},    
-        {name:"Harry Potter", role:"student", house:"Gryffindor",gender:"m",alignment:"good"},    
-        {name:"Draco Malfoy", role:"student", house:"Slytherin",gender:"m",alignment:"evil"},    
-        {name:"Hagrid", role:"staff", house:"Gryffindor",gender:"m",alignment:"good"},    
-        {name:"Luna Lovegood", role:"student", house:"Ravenclaw",gender:"f",alignment:"good"},    
-        {name:"Voldemort", role:"", house:"Slytherin",gender:"m",alignment:"evil"},    
-        {name:"Bellatrix Lestrange", role:"", house:"Slytherin",gender:"f",alignment:"evil"},           
-        {name:"Severus Snape", role:"staff", house:"Slytherin",gender:"m",alignment:"?"}
-        ];
-
-        $(document).ready(function(){
-
-        // Add a button for each 'house' value
-        let uniqueHouses = [...new Set(characters.map(character => character.house))];
-        uniqueHouses.forEach(house => {
-            $('#buttons').append(`<button class="house-button" data-house="${house}">${house}</button>`);
-        });
-
-        // Add table rows for each character
-        characters.forEach(character => {
-            let row = $('<tr>');
-            row.append(`<td>${character.name}</td>`);
-            row.append(`<td>${character.role}</td>`);
-            row.append(`<td>${character.house}</td>`);
-            row.append(`<td>${character.gender}</td>`);
-            row.append(`<td>${character.alignment}</td>`);
-            $('#characters tbody').append(row);
-
-           
-            if (character.name === "Albus Dumbledore" || character.name === "Ron Weasley" || 
-            character.name === "Ginny Weasley" || character.name === "Hermione Granger" 
-            || character.name === "Prof McGonagall" ||
-             character.name === "Harry Potter" || character.name === "Hagrid") {
-                row.addClass('important-character');
-            }
-        });
-
-        // Set visible rows to alternating background color
-        $('#characters tbody tr:nth-child(even)').addClass('over');
-
-        //  add click handler to show only rows matching selected 'house'. Enable buttons to call this handler.
-        $('.house-button').click(function(){
-            let house = $(this).data('house');
-            $('#characters tbody tr').hide();
-            $(`#characters tbody tr[data-house="${house}"]`).show();
-        });
-
-        // Add click handler to reset table
-        $('.reset-button').click(function(){
-            $('#characters tbody tr').hide();
-            $('#characters tbody tr:nth-child(even)').show(); 
-            $('.important-character').show();
-        });
-
-        });
-    </script>
+    <button id="resetBtn">Reset</button>
 </body>
+
+<script>
+
+    let characters = [
+        {name: "Albus Dumbledore", role: "staff", house: "Gryffindor", gender: "m", alignment: "good"},    
+        {name: "Nymphadora Tonks", role: "", house: "Hufflepuff", gender: "f", alignment: "good"},    
+        {name: "Ron Weasley", role: "student", house: "Gryffindor", gender: "m", alignment: "good"},    
+        {name: "Ginny Weasley", role: "student", house: "Gryffindor", gender: "f", alignment: "good"},    
+        {name: "Hermione Granger", role: "student", house: "Gryffindor", gender: "f", alignment: "good"},    
+        {name: "Mad-eye Moody", role: "staff", house: "", gender: "m", alignment: "good"},    
+        {name: "Prof McGonagall", role: "staff", house: "Gryffindor", gender: "f", alignment: "good"},    
+        {name: "Harry Potter", role: "student", house: "Gryffindor", gender: "m", alignment: "good"},    
+        {name: "Draco Malfoy", role: "student", house: "Slytherin", gender: "m", alignment: "evil"},    
+        {name: "Hagrid", role: "staff", house: "Gryffindor", gender: "m", alignment: "good"},    
+        {name: "Luna Lovegood", role: "student", house: "Ravenclaw", gender: "f", alignment: "good"},    
+        {name: "Voldemort", role: "", house: "Slytherin", gender: "m", alignment: "evil"},    
+        {name: "Bellatrix Lestrange", role: "", house: "Slytherin", gender: "f", alignment: "evil"},           
+        {name: "Severus Snape", role: "staff", house: "Slytherin", gender: "m", alignment: "?"}
+    ];
+
+    $(document).ready(function(){
+
+        function addHouseButtons() {
+            let houses = [];
+            characters.forEach(character => {
+                if (character.house && !houses.includes(character.house)) {
+                    houses.push(character.house);
+                    $('#buttons').append(`<button class="houseBtn">${character.house}</button>`);
+                }
+            });
+        }
+
+
+        function generateTableRows() {
+            characters.forEach(character => {
+                $('#characterTable').append(`
+                    <tr class="characterRow" data-house="${character.house}">
+                        <td>${character.name}</td>
+                        <td>${character.role}</td>
+                        <td>${character.house}</td>
+                        <td>${character.gender}</td>
+                        <td>${character.alignment}</td>
+                    </tr>
+                `);
+            });
+        }
+
+
+        addHouseButtons();
+
+
+        generateTableRows();
+
+
+        $('#characterTable tr:even').addClass('over');
+
+
+        $('.houseBtn').click(function() {
+            let house = $(this).text();
+            $('#characterTable tr').hide();
+            $(`#characterTable tr[data-house="${house}"]`).show();
+        });
+
+
+        $('#resetBtn').click(function() {
+            $('#characterTable tr').show();
+        });
+    });
+</script>
 </html>
