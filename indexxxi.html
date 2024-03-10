@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <title>Weather Forecast</title>
-
 </head>
 <body>
-    <h1>Weather Forecast</h1>
+    
     <form id="weatherForm">
         <label for="city">Enter a city name:</label>
         <input type="text" id="city" name="city" required>
@@ -21,8 +19,9 @@
         form.addEventListener('submit', async function (event) {
             event.preventDefault();
 
- const city = form.elements.city.value;
- const apiKey = '475ff82439afe058cdbee1ab3bac72df'; 
+            const city = form.elements.city.value;
+            const apiKey = '475ff82439afe058cdbee1ab3bac72df';
+            const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
 
             if (!city || !isNaN(city)) {
                 alert('Please enter a valid city name.');
@@ -30,8 +29,12 @@
             }
 
             try {
-                const response = await axios.get(apiUrl);
-                const forecastData = response.data.list;
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch weather data');
+                }
+                const responseData = await response.json();
+                const forecastData = responseData.list;
 
                 forecastDiv.innerHTML = '';
 
@@ -52,7 +55,7 @@
                         const maxTemp = item.main.temp_max;
                         const humidity = item.main.humidity;
                         const description = item.weather[0].description;
-
+                        const iconUrl = `https://openweathermap.org/img/wn/${item.weather[0].icon}.png`;
 
                         const forecastItem = document.createElement('div');
                         forecastItem.innerHTML = `
@@ -68,8 +71,8 @@
                     }
                 });
             } catch (error) {
-                console.error('Error weather data:', error);
-                forecastDiv.innerHTML = '<p>Failed forecast data.</p>';
+                console.error('Error fetching weather data:', error);
+                forecastDiv.innerHTML = '<p>Failed to fetch forecast data.</p>';
             }
         });
     </script>
