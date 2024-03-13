@@ -1,68 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Draw a picture</title>
-    <style>
-        canvas {
-            border: 1px solid grey;
-        }
-    </style>
+
+<title>Drawing</title>
+<style>
+    canvas {
+        border: 1px solid black;
+    }
+</style>
 </head>
 <body>
-    <canvas id="myCanvas" width="300" height="150"></canvas>
+<canvas id="myCanvas" width="600" height="400"></canvas>
 
-    <script>
-       
-        const myCanvas = document.getElementById("myCanvas");
-        const ctx = myCanvas.getContext("2d");
-
- 
-        ctx.fillStyle = "red";
-        ctx.fillRect(20, 20, 150, 100);
-
-
-        ctx.strokeStyle = "blue";
-        ctx.beginPath();
-        ctx.moveTo(20, 20);
-        ctx.lineTo(20, 100);
-        ctx.lineTo(70, 100);
-        ctx.stroke();
+<script>
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
 
     
-        let squareX = 20;
-        let squareY = 20;
-        let dx = 2;
-        let dy = 2;
+    let x = canvas.width / 2;
+    let y = canvas.height / 2;
+    let dx = 2; 
+    let dy = -2; 
+    const ballRadius = 10;
 
-        function drawSquare() {
-            ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-            ctx.beginPath();
-            ctx.rect(squareX, squareY, 50, 50);
-            ctx.closePath();
-            ctx.fillStyle = 'green';
-            ctx.fill();
-            ctx.strokeStyle = 'black';
-            ctx.stroke();
+    function draw() {
+      
+        ctx.save();
+
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        
+        ctx.fillStyle = "skyblue";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      
+        ctx.beginPath();
+        ctx.arc(100, 100, 50, 0, Math.PI * 2);
+        ctx.fillStyle = "yellow";
+        ctx.fill();
+        ctx.closePath();
+
+      
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height);
+        ctx.quadraticCurveTo(canvas.width / 2, canvas.height / 2, canvas.width, canvas.height);
+        ctx.fillStyle = "green";
+        ctx.fill();
+        ctx.closePath();
+
+       
+        ctx.beginPath();
+        ctx.arc(x, y, ballRadius, 0, Math.PI*2); 
+        ctx.fillStyle = 'orange';
+        ctx.fill();
+        ctx.closePath();
+
+        ctx.restore();
+
+        
+        x += dx;
+        y += dy;
+
+      
+        if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+            dx = -dx;
         }
-
-        function animate() {
-            drawSquare();
-
-            squareX += dx;
-            squareY += dy;
-
-            if (squareX + dx > myCanvas.width - 50 || squareX + dx < 0) {
-                dx = -dx;
-            }
-
-            if (squareY + dy > myCanvas.height - 50 || squareY + dy < 0) {
-                dy = -dy;
-            }
-
-            requestAnimationFrame(animate);
+        if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+            dy = -dy;
         }
+    }
 
-        animate();
-    </script>
+    setInterval(draw, 10); 
+</script>
 </body>
 </html>
